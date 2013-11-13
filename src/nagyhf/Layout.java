@@ -35,6 +35,10 @@ public class Layout extends JFrame implements Runnable{
 	protected JMenuBar menuBar;
 	protected JButton[] editButtons;
 	
+	/*tesz**/
+	public JMenuItem menuItemChoose;
+	
+	
 	public Layout(ArrayList<Car> idata){
 		this.setSize(600, 400);
 		this.data = idata;
@@ -46,6 +50,7 @@ public class Layout extends JFrame implements Runnable{
 		menuItemAdd = new JMenuItem("Add");
 		menuItemLoad = new JMenuItem("Load");
 		menuItemSave = new JMenuItem("Save");
+		menuItemChoose = new JMenuItem("Choose");
 		menuBar = new JMenuBar();
 		
 		
@@ -55,6 +60,7 @@ public class Layout extends JFrame implements Runnable{
 		menuFile.add(menuItemAdd);
 		menuFile.add(menuItemLoad);
 		menuFile.add(menuItemSave);
+		menuFile.add(menuItemChoose);
 		
 		/**Table Betoltes**/
 		
@@ -73,6 +79,9 @@ public class Layout extends JFrame implements Runnable{
 		menuItemSave.addActionListener(bl);
 		menuItemLoad.setActionCommand("load");
 		menuItemLoad.addActionListener(bl);
+		menuItemChoose.setActionCommand("browse");
+		menuItemChoose.addActionListener(bl);
+		
 		
 		/**Felrajzolas**/
 		
@@ -108,7 +117,7 @@ public class Layout extends JFrame implements Runnable{
 			if(command.equals("add")){
 				MultipleInputDialog inputDialog = new MultipleInputDialog();
 				data.add(inputDialog.getDialogCar());
-				dataTable.repaint();
+				
 				}
 			else
 			if(command.equals("save")){
@@ -129,20 +138,28 @@ public class Layout extends JFrame implements Runnable{
 					FileInputStream fileIn = new FileInputStream("load.ser");
 					ObjectInputStream in = new ObjectInputStream(fileIn);
 					
-					ArrayList<Car> tmp = (ArrayList<Car>) in.readObject();
-					data = tmp;
 					
-					System.out.println("olvasva 1/1 adat "+tmp.get(1).getOne());
+					data = (ArrayList<Car>) in.readObject();
+					//data = tmp;
 					fileIn.close();
 					in.close();
+					//MultipleInputDialog inputDialog = new MultipleInputDialog();
+					//data.add(inputDialog.getDialogCar());
+					//System.out.println("olvasva 1/1 adat "+tmp.get(1).getOne());
+					
 					System.out.println("beolvasva");
-					dataTable.repaint();
-					dataTable.scrollPane.repaint();
+					repaint();
+					
 					System.out.println("olvasva 1/1 adat data-ban "+data.get(1).getOne());
 				}catch(IOException i){i.printStackTrace();} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+			}
+			else
+			if(command.equals("browse")){
+				FileDialog jf = new FileDialog(Layout.this,"Choose something", FileDialog.LOAD);
+				jf.setVisible(true);
 			}
 
 		}

@@ -15,7 +15,6 @@ public class CustomTable extends JPanel{
 	
 	public CustomTable(ArrayList cin,String[] head) {
         super(new GridBagLayout());
-        
         jtable = new JTable(new CustomTableModel(cin,head));
         
        
