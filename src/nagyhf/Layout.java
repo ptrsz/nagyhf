@@ -122,9 +122,14 @@ public class Layout extends JFrame implements Runnable{
 			else
 			if(command.equals("save")){
 				try {
-					FileOutputStream fileOut = new FileOutputStream("save.ser");
+					FileDialog fd = new FileDialog(Layout.this,"Válasszon egy célmappát",FileDialog.SAVE);
+					fd.setVisible(true);
+					String dir = fd.getDirectory();
+					String filename = fd.getFile();
+					
+					FileOutputStream fileOut = new FileOutputStream(dir+filename);
 					ObjectOutputStream out = new ObjectOutputStream(fileOut);
-					out.writeObject(data);
+					out.writeObject(Layout.this.data);
 					out.close();
 					fileOut.close();
 					System.out.println("save OK");
@@ -135,17 +140,21 @@ public class Layout extends JFrame implements Runnable{
 			else
 			if(command.equals("load")){
 				try {
-					FileInputStream fileIn = new FileInputStream("load.ser");
+					FileDialog fd = new FileDialog(Layout.this,"Válasszon egy célmappát",FileDialog.LOAD);
+					fd.setVisible(true);
+					String dir = fd.getDirectory();
+					String filename = fd.getFile();
+					
+					FileInputStream fileIn = new FileInputStream(dir+filename);
 					ObjectInputStream in = new ObjectInputStream(fileIn);
 					
 					
-					data = (ArrayList<Car>) in.readObject();
-					//data = tmp;
+					Layout.this.data = (ArrayList<Car>) in.readObject();
+					dataTable.repaint();
+					
 					fileIn.close();
 					in.close();
-					//MultipleInputDialog inputDialog = new MultipleInputDialog();
-					//data.add(inputDialog.getDialogCar());
-					//System.out.println("olvasva 1/1 adat "+tmp.get(1).getOne());
+					
 					
 					System.out.println("beolvasva");
 					repaint();
